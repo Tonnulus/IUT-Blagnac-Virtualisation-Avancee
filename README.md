@@ -1,6 +1,6 @@
 # Virtualisation avancée — IUT de Blagnac
 
-Supports du module **R5.A.09 Virtualisation avancée** (BUT, semestre 5, IUT de Blagnac) : présentation du module, cours de référence et sujets des quatre TD.
+Supports du module **R5.A.09 Virtualisation avancée** (BUT Informatique, 3ᵉ année, semestre 5, IUT de Blagnac) : présentation du module, cours de référence et sujets des quatre TD.
 
 Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF, mis en page pour l'impression.
 
