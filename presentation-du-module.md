@@ -8,7 +8,7 @@
 
 ## Fil rouge
 
-Le fil rouge de ce cours est [cette vidéo](https://webetud.iut-blagnac.fr/mod/url/view.php?id=30435) (sur webetud, accessible avec votre compte IUT).
+Le fil rouge de ce cours est la conférence [« Une architecture GitOps from scratch : GitLab, Ansible, Terraform, Kubernetes et AWS »](https://www.youtube.com/watch?v=FyAD_-LAMLo) (L. Ortola et A. Moreau, Devoxx France), sur YouTube.
 
 ## Compétences
 
