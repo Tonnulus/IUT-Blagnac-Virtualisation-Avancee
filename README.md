@@ -7,7 +7,7 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 ## Par où commencer
 
 1. Lire la [présentation du module](presentation-du-module.md) : objectifs, planning, modalités d'évaluation.
-2. Garder sous la main [Les notions essentielles](cours/les-notions-essentielles.md), le cours de référence. Ses encadrés « À retenir » forment le socle attendu à l'évaluation.
+2. Garder sous la main [Les notions essentielles](cours/README.md), le cours de référence. Ses encadrés « À retenir » forment le socle attendu à l'évaluation.
 3. Suivre les TD dans l'ordre : chacun s'appuie sur le précédent.
 
 ## Contenu
@@ -18,11 +18,22 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 | --- | --- | --- |
 | Présentation du module | [Markdown](presentation-du-module.md) | [PDF](pdf/00-presentation-du-module.pdf) |
 
-### Cours
+### Cours : les notions essentielles
 
-| Document | Thèmes | Lire en ligne | PDF |
-| --- | --- | --- | --- |
-| Les notions essentielles | Virtualisation, stockage (RAID, LVM), conteneurs, orchestration, cloud, DevOps, Infrastructure as Code, monitoring | [Markdown](cours/les-notions-essentielles.md) | [PDF](pdf/cours-les-notions-essentielles.pdf) |
+[Introduction et sommaire](cours/README.md) · [PDF complet](pdf/cours-les-notions-essentielles.pdf)
+
+| Chapitre | Thèmes |
+| --- | --- |
+| [1. Virtualisation, concepts généraux](cours/01-virtualisation-concepts-generaux.md) | Historique, virtualisation et émulation, avantages, domaines d'application |
+| [2. Serveur virtualisé](cours/02-serveur-virtualise.md) | Hyperviseurs de type 1 et 2, paravirtualisation, conteneurs |
+| [3. Stockage virtualisé](cours/03-stockage-virtualise.md) | Thin provisioning, DAS/SAN/NAS, RAID, LVM |
+| [4. Conteneurisation](cours/04-conteneurisation.md) | Images, couches, volumes, réseau, Docker, Dockerfile, Docker Compose |
+| [5. Orchestration](cours/05-orchestration.md) | Scaling, orchestration de VM et de conteneurs, Kubernetes |
+| [6. Cloud](cours/06-cloud.md) | IaaS/PaaS/SaaS, modèles de déploiement, défis, tendances |
+| [7. Le DevOps](cours/07-le-devops.md) | Principes, avantages et défis, outils |
+| [8. Infrastructure as Code](cours/08-infrastructure-as-code.md) | Principes, Ansible, Terraform, CI/CD |
+| [9. Monitoring](cours/09-monitoring.md) | Types de monitoring, outils, SLA/SLO/SLI |
+| [10. Glossaire](cours/10-glossaire.md) | Termes clés du module |
 
 ### Travaux dirigés
 
@@ -45,7 +56,7 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 ```text
 .
 ├── presentation-du-module.md   présentation du module
-├── cours/                      cours de référence
+├── cours/                      cours de référence, un fichier par chapitre
 ├── td/                         sujets des TD 1 à 4
 ├── images/                     illustrations, un dossier par document
 └── pdf/                        versions PDF de tous les documents
