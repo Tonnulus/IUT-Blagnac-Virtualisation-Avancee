@@ -10,7 +10,7 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 
 1. Lire la [présentation du module](presentation-du-module.md) : objectifs, planning, modalités d'évaluation.
 2. Garder sous la main [Les notions essentielles](cours/README.md), le cours de référence. Ses encadrés « À retenir » forment le socle attendu à l'évaluation.
-3. Suivre les TD dans l'ordre : chacun s'appuie sur le précédent.
+3. Suivre les TD dans l'ordre : chacun s'appuie sur le précédent. Chaque TD commence par des exercices théoriques, regroupés dans un QCM à compléter.
 
 ## Contenu
 
@@ -39,12 +39,12 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 
 ### Travaux dirigés
 
-| TD | Durée | Thème | Outils | Lire en ligne | PDF |
-| --- | --- | --- | --- | --- | --- |
-| TD 1 | 4 h 30 | Introduction à la virtualisation avancée | Virt-Manager (KVM), Docker, Docker Compose, OpenCTI | [Markdown](td/td1-introduction-a-la-virtualisation-avancee.md) | [PDF](pdf/td1-introduction-a-la-virtualisation-avancee.pdf) |
-| TD 2 | 3 h | Infrastructure as Code | Ansible, Terraform | [Markdown](td/td2-infrastructure-as-code.md) | [PDF](pdf/td2-infrastructure-as-code.pdf) |
-| TD 3 | 3 h | Monitoring d'infrastructures virtualisées | Prometheus, Grafana, cAdvisor, Node Exporter, LVM | [Markdown](td/td3-monitoring-d-infrastructures-virtualisees.md) | [PDF](pdf/td3-monitoring-d-infrastructures-virtualisees.pdf) |
-| TD 4 | 3 h | Orchestration | Minikube, kubectl (Kubernetes) | [Markdown](td/td4-orchestration.md) | [PDF](pdf/td4-orchestration.pdf) |
+| TD | Durée | Thème | Outils | Sujet | PDF | QCM |
+| --- | --- | --- | --- | --- | --- | --- |
+| TD 1 | 4 h 30 | Introduction à la virtualisation avancée | Virt-Manager (KVM), Docker, Docker Compose, OpenCTI | [Markdown](td/td1-introduction-a-la-virtualisation-avancee.md) | [PDF](pdf/td1-introduction-a-la-virtualisation-avancee.pdf) | [QCM](td/td1-qcm.md) |
+| TD 2 | 3 h | Infrastructure as Code | Ansible, Terraform | [Markdown](td/td2-infrastructure-as-code.md) | [PDF](pdf/td2-infrastructure-as-code.pdf) | [QCM](td/td2-qcm.md) |
+| TD 3 | 3 h | Monitoring d'infrastructures virtualisées | Prometheus, Grafana, cAdvisor, Node Exporter, LVM | [Markdown](td/td3-monitoring-d-infrastructures-virtualisees.md) | [PDF](pdf/td3-monitoring-d-infrastructures-virtualisees.pdf) | [QCM](td/td3-qcm.md) |
+| TD 4 | 3 h | Orchestration | Minikube, kubectl (Kubernetes) | [Markdown](td/td4-orchestration.md) | [PDF](pdf/td4-orchestration.pdf) | [QCM](td/td4-qcm.md) |
 
 ## Prérequis pour les TD
 
@@ -59,7 +59,7 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 .
 ├── presentation-du-module.md   présentation du module
 ├── cours/                      cours de référence, un fichier par chapitre
-├── td/                         sujets des TD 1 à 4
+├── td/                         sujets et QCM des TD 1 à 4
 ├── images/                     illustrations, un dossier par document
 ├── pdf/                        versions PDF de tous les documents
 ├── LICENSE                     licence des supports (CC BY-NC-SA 4.0)

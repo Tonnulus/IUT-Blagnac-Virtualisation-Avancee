@@ -4,6 +4,8 @@
 
 Les exercices théoriques disponibles sur Moodle doivent être terminés avant la prochaine séance.
 
+Les mêmes questions existent sous forme de document : [QCM du TD 2](td2-qcm.md), à compléter dans votre compte rendu si vous n'avez pas accès à Moodle.
+
 Pour les réaliser, vous pouvez vous appuyer sur les pages suivantes ainsi que sur les cours de cette année et de l'année précédente :
 
 - [Red Hat : qu'est-ce que le DevOps ?](https://www.redhat.com/fr/topics/devops)
