@@ -33,7 +33,7 @@ La virtualisation consiste à créer une version virtuelle d'une ressource (syst
 
 Deux termes reviendront tout au long du cours :
 
-- **Hôte** (*host*) : le système physique sur lequel s'exécutent les machines virtuelles ou les conteneurs.
+- **Hôte** (*host*) : le système sur lequel s'exécutent les machines virtuelles ou les conteneurs. C'est le plus souvent une machine physique, mais ce peut être une VM, par exemple lorsqu'on lance des conteneurs dans une VM.
 - **Invité** (*guest*) : le système d'exploitation ou l'application qui s'exécute à l'intérieur d'une machine virtuelle ou d'un conteneur.
 
 La plupart des solutions de virtualisation savent aussi émuler certains périphériques (carte réseau, contrôleur disque, carte graphique) pour les présenter aux invités.
