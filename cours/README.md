@@ -73,8 +73,6 @@ Ce document rassemble les notions à maîtriser pour suivre le module de virtual
    - [SLA, SLO et SLI](09-monitoring.md#sla-slo-et-sli)
 10. [Glossaire](10-glossaire.md)
 
-Le cours existe aussi en un seul document PDF : [les-notions-essentielles.pdf](../pdf/cours-les-notions-essentielles.pdf).
-
 ---
 
 [Commencer la lecture : 1. Virtualisation, concepts généraux →](01-virtualisation-concepts-generaux.md)
