@@ -8,7 +8,7 @@ Le **DevOps** est une culture et un ensemble de pratiques qui rapprochent ces de
 
 ![La boucle infinie du DevOps : côté Dev, plan, create, verify, package ; côté Ops, release, configure, monitor](../images/les-notions-essentielles/image7.png)
 
-*Figure 11 : le cycle DevOps est une boucle continue où la supervision de la production alimente la planification suivante.*
+*Figure 11 : le cycle DevOps est une boucle continue où la supervision de la production alimente la planification suivante. (Source : Kharnagy, Wikimedia Commons, CC BY-SA 4.0 ; voir les [crédits](../CREDITS.md))*
 
 ## Les principes fondamentaux
 

@@ -61,7 +61,7 @@ Un conteneur, c'est une image à laquelle on ajoute une fine couche en lecture-�
 
 ![Un conteneur basé sur l'image ubuntu:15.04 : quatre couches d'image en lecture seule surmontées d'une fine couche en lecture-écriture](../images/les-notions-essentielles/image5.png)
 
-*Figure 4 : les couches de l'image sont en lecture seule et peuvent être partagées ; seule la couche du conteneur, au sommet, est modifiable. (Source : documentation Docker)*
+*Figure 4 : les couches de l'image sont en lecture seule et peuvent être partagées ; seule la couche du conteneur, au sommet, est modifiable. (Source : documentation Docker, Apache 2.0 ; voir les [crédits](../CREDITS.md))*
 
 ### Volumes
 
@@ -74,7 +74,7 @@ Deux autres types de montage existent :
 
 ![Les trois types de montage Docker : bind mount vers le système de fichiers de l'hôte, volume dans la zone gérée par Docker, tmpfs en mémoire](../images/les-notions-essentielles/image4.png)
 
-*Figure 5 : où vivent les données selon le type de montage. (Source : documentation Docker)*
+*Figure 5 : où vivent les données selon le type de montage. (Source : documentation Docker, Apache 2.0 ; voir les [crédits](../CREDITS.md))*
 
 ### Réseau
 
@@ -113,7 +113,7 @@ Dans l'exemple `docker run -d -p 8080:80 --name web nginx`, l'option `-d` lance 
 
 ![Diagramme d'états d'un conteneur Docker : created, running, paused, stopped et deleted, avec les commandes qui font passer de l'un à l'autre](../images/les-notions-essentielles/image8.png)
 
-*Figure 6 : états d'un conteneur (created, running, paused, stopped, deleted) et commandes qui les relient. La politique de redémarrage (restart policy) décide si un conteneur arrêté de façon inattendue, par exemple faute de mémoire (OOM), est relancé.*
+*Figure 6 : états d'un conteneur (created, running, paused, stopped, deleted) et commandes qui les relient. La politique de redémarrage (restart policy) décide si un conteneur arrêté de façon inattendue, par exemple faute de mémoire (OOM), est relancé. (Source : documentation Docker, Apache 2.0 ; voir les [crédits](../CREDITS.md))*
 
 ### Dockerfile
 

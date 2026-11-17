@@ -61,6 +61,7 @@ Tous les documents se lisent directement sur GitHub.
 ├── td/                         sujets des TD 1 à 4
 ├── qcm/                        QCM des exercices théoriques des TD 1 à 4
 ├── images/                     illustrations, un dossier par document
+├── CREDITS.md                  auteurs, sources et licences des images tierces
 ├── LICENSE                     licence des supports (CC BY-NC-SA 4.0)
 └── LICENSE-CODE                licence du code des exemples (MIT)
 ```
@@ -71,4 +72,4 @@ Tous les documents se lisent directement sur GitHub.
 
 - **Supports de cours** (textes et schémas originaux) : [Creative Commons Attribution - Pas d'utilisation commerciale - Partage dans les mêmes conditions 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr), texte complet dans [`LICENSE`](LICENSE). Vous pouvez les copier, les diffuser et les adapter, en citant l'auteur, sans usage commercial et en partageant vos versions modifiées sous la même licence.
 - **Code des exemples** (commandes, Dockerfile, fichiers Docker Compose, playbooks Ansible, configurations Terraform, manifestes Kubernetes…) : [licence MIT](LICENSE-CODE), réutilisable librement.
-- **Éléments tiers** : les logos (Docker, Kubernetes, Ansible, Terraform, Grafana, Prometheus, KVM…), les marques citées et les schémas repris de documentations officielles restent la propriété de leurs auteurs et ne sont pas couverts par ces licences.
+- **Éléments tiers** : les logos (Docker, Kubernetes, Ansible, Terraform, Grafana, Prometheus, KVM…), les marques citées et les figures reprises d'autres sources (documentations officielles, Wikimedia Commons) restent la propriété de leurs auteurs et ne sont pas couverts par ces licences. Chacune reste soumise à sa licence d'origine (Apache 2.0, CC BY 4.0, CC BY-SA…) : auteurs, sources et licences sont détaillés dans [`CREDITS.md`](CREDITS.md).

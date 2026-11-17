@@ -398,7 +398,7 @@ Cette application moderne nécessite de nombreux composants pour fonctionner. Ch
 
 ![Architecture d'OpenCTI : la plateforme s'appuie sur Elasticsearch (base de connaissances), Redis (flux d'événements et sessions) et un stockage S3 (fichiers bruts) ; les connecteurs Python récupèrent les données de services externes, s'enregistrent auprès de l'API et poussent les données dans RabbitMQ, d'où les workers Python les consomment pour les insérer dans la plateforme](../images/1-introduction-a-la-virtualisation-avancee/image1.png)
 
-*Figure 3 : architecture d'OpenCTI. Les connecteurs alimentent la file RabbitMQ, les workers insèrent les données dans la plateforme, qui les stocke dans Elasticsearch, Redis et un stockage S3 (service `minio`).*
+*Figure 3 : architecture d'OpenCTI. Les connecteurs alimentent la file RabbitMQ, les workers insèrent les données dans la plateforme, qui les stocke dans Elasticsearch, Redis et un stockage S3 (service `minio`). (Source : documentation OpenCTI, Filigran ; voir les [crédits](../CREDITS.md))*
 
 La pile OpenCTI utilise environ 4,5 Go de mémoire vive, dont 2,5 Go pour Elasticsearch. Avant de la lancer, arrêtez la VM `WordPress_TP1` et la pile WordPress (`docker compose stop` dans le répertoire `tp1-wordpress`).
 

@@ -103,7 +103,7 @@ Des **modules complémentaires** (*add-ons*) ajoutent des fonctionnalités au cl
 
 ![Architecture d'un cluster Kubernetes : plan de contrôle (api, etcd, scheduler, controller managers) relié aux nœuds qui exécutent kubelet et kube-proxy](../images/les-notions-essentielles/image6.png)
 
-*Figure 8 : tous les composants dialoguent avec le serveur d'API, seul à accéder à etcd. (Source : documentation Kubernetes)*
+*Figure 8 : tous les composants dialoguent avec le serveur d'API, seul à accéder à etcd. (Source : documentation Kubernetes, CC BY 4.0 ; voir les [crédits](../CREDITS.md))*
 
 ### Les ressources Kubernetes
 

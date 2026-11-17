@@ -37,7 +37,7 @@ Le **RAID** (*Redundant Array of Independent Disks*) combine plusieurs disques p
 
 ![Répartition des blocs de données en RAID 0, RAID 1 et RAID 5](../images/les-notions-essentielles/image9.png)
 
-*Figure 2 : en RAID 0 les blocs sont répartis, en RAID 1 ils sont dupliqués, en RAID 5 ils sont répartis avec un bloc de parité (Ap, Bp…) tournant d'un disque à l'autre.*
+*Figure 2 : en RAID 0 les blocs sont répartis, en RAID 1 ils sont dupliqués, en RAID 5 ils sont répartis avec un bloc de parité (Ap, Bp…) tournant d'un disque à l'autre. (Source : Cburnett, Wikimedia Commons, CC BY-SA 3.0 ; voir les [crédits](../CREDITS.md))*
 
 D'autres niveaux répondent à des besoins plus spécifiques :
 
