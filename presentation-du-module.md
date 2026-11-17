@@ -6,6 +6,10 @@
 2. Comprendre comment optimiser l'utilisation d'un système par la mutualisation des ressources.
 3. Appréhender les différentes méthodes de virtualisation.
 
+## Fil rouge
+
+Le fil rouge de ce cours est [cette vidéo](https://webetud.iut-blagnac.fr/mod/url/view.php?id=30435) (sur webetud, accessible avec votre compte IUT).
+
 ## Compétences
 
 1. Intégrer des solutions logicielles dans un environnement virtualisé.
@@ -24,12 +28,18 @@
 
 | Modalité | Part de la note |
 | --- | --- |
-| Évaluation sur table | 75 % |
-| Contrôle continu, en TD | 25 % |
+| Devoir sur table (évaluation finale) | 75 % |
+| Compte rendu des exercices pratiques (évaluation continue) | 25 % |
 
-L'évaluation sur table (1 h, une feuille A4 manuscrite autorisée) porte sur les notions du cours, en particulier les encadrés « À retenir » du document *Les notions essentielles*, et sur ce qui a été pratiqué en TD.
+### Compte rendu des exercices pratiques (évaluation continue)
 
-Le contrôle continu repose sur un compte rendu individuel couvrant les quatre séances, accompagné des fichiers `seance1.txt` à `seance4.txt` produits par la commande `script`. Il est noté selon la grille suivante :
+Les exercices pratiques peuvent être réalisés seul ou en groupe de trois personnes au maximum. Un groupe ne peut pas changer de composition au cours du module.
+
+Le compte rendu, lui, est **individuel** : chacun rédige et rend le sien, même en cas de travail en groupe. Il doit alors indiquer le nom de tous les membres du groupe.
+
+Chaque exercice est documenté en détail : résultats, notes et remarques. Des captures d'écran et des copies du code attestent de votre progression, ainsi que les fichiers `seance1.txt` à `seance4.txt` produits par la commande `script`. Le compte rendu couvre les quatre séances et se rend en PDF dans la section « Compte rendu exercice pratique » de webetud.
+
+Il est noté selon la grille suivante :
 
 | Critère | Points |
 | --- | --- |
@@ -38,6 +48,22 @@ Le contrôle continu repose sur un compte rendu individuel couvrant les quatre s
 | Preuves : sorties de commandes et captures d'écran pertinentes | 3 |
 | Clarté et qualité de la rédaction | 3 |
 | **Total** | **20** |
+
+Cette note peut être bonifiée selon votre participation pendant les séances et vos retours dans la section « Les notions essentielles feedback » de webetud.
+
+### Devoir sur table (évaluation finale)
+
+L'épreuve évalue votre compréhension des concepts abordés pendant le module. Elle dure **1 heure**.
+
+- **Documents autorisés** : une feuille A4 manuscrite recto verso, avec toutes les informations que vous jugez utiles (notes, schémas, commandes…). Votre stylo et cette feuille sont les seuls éléments autorisés.
+- **Programme** : tous les thèmes de ce document. Les questions portent sur les exercices pratiques des TD et sur le cours [*Les notions essentielles*](cours/README.md), en particulier ses encadrés « À retenir ».
+
+Le devoir est noté sur 20, en deux parties :
+
+| Partie | Points | Règles |
+| --- | --- | --- |
+| QCM | 10 | Pour chaque question, cochez entre une et trois options. Réponse correcte : **+1** ; réponse partiellement correcte : **0** ; réponse incorrecte : **−0,5**. La note de la partie reste comprise entre 0 et 10. |
+| Questions ouvertes | 10 | Réponses claires, concises, précises et argumentées. La qualité de la réponse, la pertinence des exemples et la justesse des explications sont évaluées. |
 
 ## Présentation des TD
 

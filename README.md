@@ -8,9 +8,10 @@ Tous les documents se lisent directement sur GitHub.
 
 ## Par où commencer
 
-1. Lire la [présentation du module](presentation-du-module.md) : objectifs, planning, modalités d'évaluation.
-2. Garder sous la main [Les notions essentielles](cours/README.md), le cours de référence. Ses encadrés « À retenir » forment le socle attendu à l'évaluation.
-3. Suivre les TD dans l'ordre : chacun s'appuie sur le précédent. Chaque TD commence par des exercices théoriques, regroupés dans un QCM à compléter.
+1. Regarder [la vidéo fil rouge du cours](https://webetud.iut-blagnac.fr/mod/url/view.php?id=30435) (sur webetud, avec votre compte IUT).
+2. Lire la [présentation du module](presentation-du-module.md) : objectifs, planning, modalités d'évaluation.
+3. Garder sous la main [Les notions essentielles](cours/README.md), le cours de référence. Ses encadrés « À retenir » forment le socle attendu à l'évaluation.
+4. Suivre les TD dans l'ordre : chacun s'appuie sur le précédent. Chaque TD commence par des exercices théoriques, regroupés dans un QCM à compléter.
 
 ## Contenu
 
