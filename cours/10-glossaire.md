@@ -18,7 +18,7 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **DevOps** | Culture et ensemble de pratiques qui rapprochent le développement et l'exploitation pour livrer plus souvent, plus vite et avec une meilleure qualité. | [7](07-le-devops.md) |
 | **Docker Compose** | Outil qui décrit dans un fichier YAML une application multi-conteneurs (services, réseaux, volumes) et la démarre en une commande. | [4](04-conteneurisation.md) |
 | **Dockerfile** | Fichier texte qui décrit, instruction par instruction, comment construire une image. | [4](04-conteneurisation.md) |
-| **Émulation** | Simulation logicielle d'un matériel différent de celui de l'hôte. | [1](01-virtualisation-concepts-generaux.md) |
+| **Émulation** | Reproduction logicielle du comportement d'un processeur et de son matériel, chaque instruction de l'invité étant interprétée ou traduite ; nécessaire pour exécuter du code d'une autre architecture. | [1](01-virtualisation-concepts-generaux.md) |
 | **Extent** | Bloc de taille fixe (4 Mio par défaut), unité d'allocation de LVM. | [3](03-stockage-virtualise.md) |
 | **FinOps** | Pilotage financier du cloud, pour éviter que des ressources oubliées ou surdimensionnées ne fassent grimper la facture. | [6](06-cloud.md) |
 | **GitOps** | Démarche où Git est la source de vérité de l'état désiré du système, qu'un agent (Argo CD, Flux) tire et réconcilie en continu. | [8](08-infrastructure-as-code.md) |
@@ -61,6 +61,7 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **Thin provisioning** | Allocation de l'espace de stockage au fur et à mesure de son utilisation réelle. | [3](03-stockage-virtualise.md) |
 | **USE / RED** | Méthodes de choix des métriques : utilisation, saturation, erreurs pour une ressource ; débit, erreurs, durée pour un service. | [9](09-monitoring.md) |
 | **Vendor lock-in** | Enfermement propriétaire : dépendance aux services propres d'un fournisseur, qui rend difficile le départ vers un concurrent. | [6](06-cloud.md) |
+| **Virtualisation** | Création d'une version virtuelle d'une ressource. Pour une machine : exécution d'un invité directement sur le processeur de l'hôte, de même architecture, l'hyperviseur n'interceptant que les instructions sensibles. | [1](01-virtualisation-concepts-generaux.md) |
 | **VLAN** | Découpage logique d'un réseau physique en plusieurs réseaux isolés, au niveau 2 (norme IEEE 802.1Q). | [1](01-virtualisation-concepts-generaux.md) |
 | **VM** | Machine virtuelle : ordinateur complet (processeur, mémoire, disques et réseau virtuels) fourni par un hyperviseur, avec son propre système d'exploitation. Ses instructions s'exécutent directement sur le processeur de l'hôte : ce n'est pas de l'émulation. | [1](01-virtualisation-concepts-generaux.md), [2](02-serveur-virtualise.md) |
 | **Volume** | Espace de stockage persistant, géré par le moteur de conteneurs et monté dans un conteneur, dont la durée de vie dépasse celle du conteneur. | [4](04-conteneurisation.md) |

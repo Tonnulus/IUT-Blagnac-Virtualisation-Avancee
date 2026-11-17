@@ -26,17 +26,19 @@ Tout commence dans les années 1960 chez IBM, avec le CP-40, capable de faire to
 
 ## Virtualisation et émulation
 
-La virtualisation consiste à créer une version virtuelle d'une ressource (système d'exploitation, serveur, réseau, stockage) au moyen d'une couche d'abstraction. Il ne faut pas la confondre avec l'émulation, même si les deux sont souvent combinées :
+La virtualisation consiste à créer une version virtuelle d'une ressource (système d'exploitation, serveur, réseau, stockage) au moyen d'une couche d'abstraction. Pour les machines, il ne faut pas la confondre avec l'émulation, même si les deux sont souvent combinées :
 
-- **Émulation** : simulation logicielle d'un matériel ou d'un environnement différent de celui de l'hôte. Elle permet d'exécuter un programme sur un matériel normalement incompatible (par exemple un logiciel ARM sur un processeur x86). Elle est souple mais coûteuse en performances.
-- **Virtualisation** : création d'instances isolées qui s'exécutent sur le même type de matériel que l'hôte. Les instructions des invités s'exécutent directement sur le processeur, ce qui limite la perte de performances.
+- **Émulation** : un logiciel reproduit le comportement d'un processeur et de son matériel, en interprétant ou en traduisant une à une les instructions du programme invité. Elle permet d'exécuter un programme conçu pour une autre architecture (par exemple un logiciel ARM sur un processeur x86). Elle est souple mais coûteuse en performances ; la traduction dynamique (QEMU, Rosetta 2 d'Apple) réduit l'écart sans le supprimer.
+- **Virtualisation** : l'invité s'exécute sur un processeur de même architecture (même jeu d'instructions) que l'hôte. La plupart de ses instructions s'exécutent directement sur le processeur physique ; seules les instructions sensibles (accès au matériel, changement de mode du processeur…) sont interceptées et traitées par l'hyperviseur. La perte de performances est faible.
+
+Ce qui distingue les deux n'est donc pas le matériel cible, mais la façon dont les instructions sont exécutées : traduites par un logiciel ou exécutées nativement sous contrôle. Sans assistance matérielle, QEMU peut d'ailleurs émuler un processeur x86 sur un processeur x86 ; associé à KVM, il le virtualise.
 
 Deux termes reviendront tout au long du cours :
 
 - **Hôte** (*host*) : le système sur lequel s'exécutent les machines virtuelles ou les conteneurs. C'est le plus souvent une machine physique, mais ce peut être une VM, par exemple lorsqu'on lance des conteneurs dans une VM.
 - **Invité** (*guest*) : le système d'exploitation ou l'application qui s'exécute à l'intérieur d'une machine virtuelle ou d'un conteneur.
 
-La plupart des solutions de virtualisation savent aussi émuler certains périphériques (carte réseau, contrôleur disque, carte graphique) pour les présenter aux invités.
+Les deux se combinent couramment : avec QEMU/KVM, KVM virtualise le processeur et la mémoire, tandis que QEMU émule les périphériques présentés à l'invité (carte réseau, contrôleur disque), ou les remplace par des pilotes paravirtualisés virtio (voir le [chapitre 2](02-serveur-virtualise.md#paravirtualisation)).
 
 ## Avantages et inconvénients
 
@@ -91,7 +93,7 @@ La VDI (*Virtual Desktop Infrastructure*) héberge les postes de travail dans le
 > **À retenir**
 >
 > - La virtualisation intercale une couche d'abstraction entre le matériel et les logiciels pour partager une même machine entre plusieurs systèmes isolés.
-> - L'émulation simule un matériel *différent* ; la virtualisation exécute des invités sur le *même* type de matériel, avec peu de pertes.
+> - L'émulation traduit par logiciel chaque instruction de l'invité (indispensable pour une autre architecture) ; la virtualisation exécute nativement les instructions d'un invité de même architecture, l'hyperviseur n'interceptant que les instructions sensibles, avec peu de pertes.
 > - Elle s'applique aux serveurs, aux réseaux (VLAN, VPN, SDN), au stockage, aux applications et aux postes de travail.
 
 **Pour aller plus loin**
