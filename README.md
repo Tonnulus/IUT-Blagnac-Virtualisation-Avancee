@@ -1,5 +1,7 @@
 # Virtualisation avancée — IUT de Blagnac
 
+[![Licence : CC BY-NC-SA 4.0](https://img.shields.io/badge/licence-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr) [![Code : MIT](https://img.shields.io/badge/code-MIT-blue.svg)](LICENSE-CODE)
+
 Supports du module **R5.A.09 Virtualisation avancée** (BUT Informatique, 3ᵉ année, semestre 5, IUT de Blagnac) : présentation du module, cours de référence et sujets des quatre TD.
 
 Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF, mis en page pour l'impression.
@@ -59,5 +61,15 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 ├── cours/                      cours de référence, un fichier par chapitre
 ├── td/                         sujets des TD 1 à 4
 ├── images/                     illustrations, un dossier par document
-└── pdf/                        versions PDF de tous les documents
+├── pdf/                        versions PDF de tous les documents
+├── LICENSE                     licence des supports (CC BY-NC-SA 4.0)
+└── LICENSE-CODE                licence du code des exemples (MIT)
 ```
+
+## Licence
+
+© 2026 Antoine Dunan.
+
+- **Supports de cours** (textes, schémas originaux, PDF) : [Creative Commons Attribution - Pas d'utilisation commerciale - Partage dans les mêmes conditions 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr), texte complet dans [`LICENSE`](LICENSE). Vous pouvez les copier, les diffuser et les adapter, en citant l'auteur, sans usage commercial et en partageant vos versions modifiées sous la même licence.
+- **Code des exemples** (commandes, Dockerfile, fichiers Docker Compose, playbooks Ansible, configurations Terraform, manifestes Kubernetes…) : [licence MIT](LICENSE-CODE), réutilisable librement.
+- **Éléments tiers** : les logos (Docker, Kubernetes, Ansible, Terraform, Grafana, Prometheus, KVM…), les marques citées et les schémas repris de documentations officielles restent la propriété de leurs auteurs et ne sont pas couverts par ces licences.
