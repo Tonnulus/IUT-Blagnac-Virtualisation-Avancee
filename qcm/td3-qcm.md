@@ -1,6 +1,6 @@
 # TD 3 : QCM
 
-*Exercices théoriques du [TD 3 : Monitoring d'infrastructures virtualisées](td3-monitoring-d-infrastructures-virtualisees.md).*
+*Exercices théoriques du [TD 3 : Monitoring d'infrastructures virtualisées](../td/td3-monitoring-d-infrastructures-virtualisees.md).*
 
 ## Mode d'emploi
 

@@ -41,10 +41,10 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 
 | TD | Durée | Thème | Outils | Sujet | PDF | QCM |
 | --- | --- | --- | --- | --- | --- | --- |
-| TD 1 | 4 h 30 | Introduction à la virtualisation avancée | Virt-Manager (KVM), Docker, Docker Compose, OpenCTI | [Markdown](td/td1-introduction-a-la-virtualisation-avancee.md) | [PDF](pdf/td1-introduction-a-la-virtualisation-avancee.pdf) | [QCM](td/td1-qcm.md) |
-| TD 2 | 3 h | Infrastructure as Code | Ansible, Terraform | [Markdown](td/td2-infrastructure-as-code.md) | [PDF](pdf/td2-infrastructure-as-code.pdf) | [QCM](td/td2-qcm.md) |
-| TD 3 | 3 h | Monitoring d'infrastructures virtualisées | Prometheus, Grafana, cAdvisor, Node Exporter, LVM | [Markdown](td/td3-monitoring-d-infrastructures-virtualisees.md) | [PDF](pdf/td3-monitoring-d-infrastructures-virtualisees.pdf) | [QCM](td/td3-qcm.md) |
-| TD 4 | 3 h | Orchestration | Minikube, kubectl (Kubernetes) | [Markdown](td/td4-orchestration.md) | [PDF](pdf/td4-orchestration.pdf) | [QCM](td/td4-qcm.md) |
+| TD 1 | 4 h 30 | Introduction à la virtualisation avancée | Virt-Manager (KVM), Docker, Docker Compose, OpenCTI | [Markdown](td/td1-introduction-a-la-virtualisation-avancee.md) | [PDF](pdf/td1-introduction-a-la-virtualisation-avancee.pdf) | [QCM](qcm/td1-qcm.md) |
+| TD 2 | 3 h | Infrastructure as Code | Ansible, Terraform | [Markdown](td/td2-infrastructure-as-code.md) | [PDF](pdf/td2-infrastructure-as-code.pdf) | [QCM](qcm/td2-qcm.md) |
+| TD 3 | 3 h | Monitoring d'infrastructures virtualisées | Prometheus, Grafana, cAdvisor, Node Exporter, LVM | [Markdown](td/td3-monitoring-d-infrastructures-virtualisees.md) | [PDF](pdf/td3-monitoring-d-infrastructures-virtualisees.pdf) | [QCM](qcm/td3-qcm.md) |
+| TD 4 | 3 h | Orchestration | Minikube, kubectl (Kubernetes) | [Markdown](td/td4-orchestration.md) | [PDF](pdf/td4-orchestration.pdf) | [QCM](qcm/td4-qcm.md) |
 
 ## Prérequis pour les TD
 
@@ -59,7 +59,8 @@ Chaque document se lit directement sur GitHub (Markdown) et existe aussi en PDF,
 .
 ├── presentation-du-module.md   présentation du module
 ├── cours/                      cours de référence, un fichier par chapitre
-├── td/                         sujets et QCM des TD 1 à 4
+├── td/                         sujets des TD 1 à 4
+├── qcm/                        QCM des exercices théoriques des TD 1 à 4
 ├── images/                     illustrations, un dossier par document
 ├── pdf/                        versions PDF de tous les documents
 ├── LICENSE                     licence des supports (CC BY-NC-SA 4.0)

@@ -21,7 +21,7 @@ Liste des exercices à réaliser :
 
 Ces exercices doivent être terminés avant la prochaine séance.
 
-Les mêmes questions existent sous forme de document : [QCM du TD 1](td1-qcm.md), à compléter dans votre compte rendu si vous n'avez pas accès à Moodle.
+Les mêmes questions existent sous forme de document : [QCM du TD 1](../qcm/td1-qcm.md), à compléter dans votre compte rendu si vous n'avez pas accès à Moodle.
 
 La suite de la séance se déroule en autonomie, sur les ordinateurs de l'IUT, sous la partition Ubuntu 22.04. N'oubliez pas de prendre des notes et de faire des captures d'écran pour rédiger votre compte rendu individuel, qui sera évalué. Ce compte rendu devra présenter votre progression sur les quatre séances ainsi que vos réponses aux questions de l'énoncé.
 

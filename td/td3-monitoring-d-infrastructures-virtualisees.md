@@ -4,7 +4,7 @@
 
 Les exercices théoriques disponibles sur Moodle doivent être complétés avant la prochaine séance.
 
-Les mêmes questions existent sous forme de document : [QCM du TD 3](td3-qcm.md), à compléter dans votre compte rendu si vous n'avez pas accès à Moodle.
+Les mêmes questions existent sous forme de document : [QCM du TD 3](../qcm/td3-qcm.md), à compléter dans votre compte rendu si vous n'avez pas accès à Moodle.
 
 Pour vous aider à réaliser ces exercices, vous pouvez vous référer aux pages suivantes ainsi qu'aux cours de cette année et de l'année précédente :
 

@@ -1,6 +1,6 @@
 # TD 1 : QCM
 
-*Exercices théoriques du [TD 1 : Introduction à la virtualisation avancée](td1-introduction-a-la-virtualisation-avancee.md).*
+*Exercices théoriques du [TD 1 : Introduction à la virtualisation avancée](../td/td1-introduction-a-la-virtualisation-avancee.md).*
 
 ## Mode d'emploi
 

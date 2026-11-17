@@ -1,6 +1,6 @@
 # TD 4 : QCM
 
-*Exercices théoriques du [TD 4 : Orchestration](td4-orchestration.md).*
+*Exercices théoriques du [TD 4 : Orchestration](../td/td4-orchestration.md).*
 
 ## Mode d'emploi
 

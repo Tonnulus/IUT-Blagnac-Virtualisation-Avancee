@@ -1,6 +1,6 @@
 # TD 2 : QCM
 
-*Exercices théoriques du [TD 2 : Infrastructure as Code](td2-infrastructure-as-code.md).*
+*Exercices théoriques du [TD 2 : Infrastructure as Code](../td/td2-infrastructure-as-code.md).*
 
 ## Mode d'emploi
 
