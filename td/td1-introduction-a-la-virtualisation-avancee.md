@@ -238,15 +238,16 @@ $ setfacl -m u:libvirt-qemu:x $HOME
 La VM démarre alors sur l'image ISO. Installez le système sur le disque :
 
 1. Dans le menu TurnKey, choisissez **Install to hard disk**.
-2. Choisissez le disque `/dev/vda` (10 GiB), puis le partitionnement **guided** (partitions ext4 simples) et **No** pour la partition `/boot` séparée. Validez le schéma de partitionnement et l'avertissement d'effacement du disque.
+2. Choisissez le partitionnement **guided** (partitions ext4 simples) : descendez d'une ligne, car **guided-lvm** est sélectionné par défaut. Répondez **No** pour la partition `/boot` séparée, puis validez le schéma de partitionnement (`/dev/vda1` en ext4, `/dev/vda2` en swap) et l'avertissement d'effacement du disque `/dev/vda`.
 3. À la question **Begin installation?**, répondez **Yes** (le bouton sélectionné par défaut est **No**).
 4. Au bout d'une à deux minutes, acceptez le redémarrage (**Yes**).
+5. L'installateur vous demande alors de retirer le support d'installation : appuyez deux fois sur **Entrée**. Virt-manager redémarre la VM sur son disque ; si elle reste arrêtée, démarrez-la avec le bouton **Power on** (▶).
 
 Au premier démarrage, TurnKey vous pose quelques questions :
 
 - mots de passe du compte `root`, du compte MariaDB `adminer` et du compte WordPress `admin` : au moins 8 caractères, dont 3 types parmi majuscules, minuscules, chiffres et symboles. Notez-les ;
 - adresse électronique du compte `admin` : conservez la valeur proposée ;
-- **WordPress domain** : saisissez `http://` suivi de l'adresse IP de la VM, par exemple `http://192.168.122.84`. Pour connaître cette adresse, exécutez sur votre PC (et non dans la VM) la commande ci-dessous. Si vous laissez la valeur par défaut (`www.example.com`), le site s'affiche sans mise en forme et la connexion à l'administration renvoie vers un domaine qui n'est pas le vôtre ;
+- **WordPress domain** : effacez la valeur proposée, puis saisissez `http://` suivi de l'adresse IP de la VM, par exemple `http://192.168.122.84`. Pour connaître cette adresse, exécutez sur votre PC (et non dans la VM) la commande ci-dessous. Si vous laissez la valeur par défaut (`http://www.example.com`), le site s'affiche sans mise en forme et la connexion à l'administration renvoie vers un domaine qui n'est pas le vôtre ;
 - **Initialize Hub services**, **System Notifications** et **Security updates** : choisissez **Skip** (la mise à jour de sécurité prendrait plusieurs minutes).
 
 ```bash
@@ -381,8 +382,11 @@ $ time docker compose up -d
 **Question 1.2.2 :** quel espace disque l'application occupe-t-elle ?
 
 ```bash
-$ docker system df
+$ docker compose images
+$ docker system df -v
 ```
+
+La première commande donne la taille des images de l'application ; la seconde détaille aussi la taille de chaque volume (ceux de ce TD commencent par `tp1-wordpress_`). Sans l'option `-v`, `docker system df` ne donne que le total de tout ce que Docker occupe sur le poste.
 
 ### 1.3 Comparatif de WordPress sous Docker et dans une VM
 
@@ -505,6 +509,14 @@ Le fichier officiel démarre aussi l'assistant IA XTM One, un gestionnaire d'int
 
 - dans le service `minio`, supprimez la section `ports` : seuls les conteneurs d'OpenCTI ont besoin de joindre le stockage S3.
 
+Elasticsearch refuse de créer ses index quand le disque du poste est rempli à plus de 90 %. Ce seuil est un pourcentage : sur un grand disque, il peut être atteint alors qu'il reste plus de 20 Go libres. OpenCTI ne parvient alors pas à s'initialiser et redémarre en boucle. Désactivez ce seuil en ajoutant une variable au service `elasticsearch`, puis vérifiez qu'elle est bien présente :
+
+```bash
+$ sed -i 's#^\( *\)- xpack.ml.enabled=false#&\n\1- cluster.routing.allocation.disk.threshold_enabled=false#' \
+    docker-compose.yml
+$ grep -n threshold_enabled docker-compose.yml
+```
+
 Les images d'OpenCTI et du stockage S3 portent l'étiquette `latest`, qui désigne une version différente à chaque nouvelle publication. Fixez leurs versions, puis vérifiez la liste des services restants (vous devez en obtenir 8) :
 
 ```bash
@@ -545,6 +557,14 @@ En cas de problème avec Elasticsearch, exécutez la commande suivante sur votre
 ```bash
 $ sudo sysctl -w vm.max_map_count=1048575
 ```
+
+Si le conteneur `opencti` reste `unhealthy` ou redémarre en boucle, et que ses journaux contiennent `no_shard_available_action_exception`, Elasticsearch n'a pas pu créer ses index. Vérifiez l'état du cluster, qui doit être `green` ou `yellow` :
+
+```bash
+$ docker compose exec elasticsearch curl -s localhost:9200/_cluster/health?pretty
+```
+
+S'il est `red`, vérifiez que vous avez bien désactivé le seuil de disque (variable `cluster.routing.allocation.disk.threshold_enabled`, voir plus haut), puis relancez la pile depuis zéro avec `docker compose down -v` et `docker compose up -d`.
 
 Depuis votre navigateur, testez la page <http://localhost:8080>. Connectez-vous avec l'adresse et le mot de passe de l'administrateur, enregistrés dans le fichier `.env` :
 
@@ -588,6 +608,8 @@ $ docker rmi my-hello-world fedora:latest hello-world
 $ docker logout
 ```
 
+Un message `No such image` pour `fedora:latest` est sans gravité : selon la version de Docker, l'image de base utilisée pour construire `my-hello-world` n'apparaît pas dans la liste des images.
+
 Arrêtez la VM, puis supprimez-la avec son disque, ainsi que le pool de stockage. La commande `virsh destroy` coupe la VM comme un arrêt électrique : elle renvoie une erreur sans gravité si la VM est déjà arrêtée.
 
 ```bash
@@ -609,7 +631,6 @@ Supprimez enfin vos fichiers et vos téléchargements :
 ```bash
 $ cd ~
 $ rm -f ~/Téléchargements/turnkey-wordpress-19.0-trixie-amd64.iso*
-$ rm -fr ~/Téléchargements/bitnami*
 $ rm -fr ~/R5A09/"${MonNom:?}"
 ```
 
