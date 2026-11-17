@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" width="900" height="300" font-family="Arial, Liberation Sans, sans-serif" font-size="15">
+  <defs>
+    <marker id="fleche" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#555555"/>
+    </marker>
+    <style>
+      .etape { fill: #fff2cc; stroke: #d6b656; stroke-width: 1.5; }
+      .zone { fill: #f8cecc; fill-opacity: 0.35; stroke: #b85450; stroke-width: 1.5; }
+      .lien { stroke: #555555; stroke-width: 1.8; fill: none; marker-end: url(#fleche); }
+      .txt { fill: #222222; text-anchor: middle; dominant-baseline: middle; }
+      .titre { fill: #b85450; font-size: 14px; font-weight: bold; }
+    </style>
+  </defs>
+
+  <!-- Intégration continue -->
+  <rect class="zone" x="10" y="10" width="580" height="120" rx="8"/>
+  <text class="titre" x="24" y="32">Intégration continue (CI)</text>
+  <rect class="etape" x="30" y="50" width="150" height="60" rx="6"/>
+  <text class="txt" x="105" y="80">git push</text>
+  <rect class="etape" x="225" y="50" width="150" height="60" rx="6"/>
+  <text class="txt" x="300" y="72">Build dans</text>
+  <text class="txt" x="300" y="90">un conteneur</text>
+  <rect class="etape" x="420" y="50" width="150" height="60" rx="6"/>
+  <text class="txt" x="495" y="72">Tests unitaires</text>
+  <text class="txt" x="495" y="90">et d'intégration</text>
+  <path class="lien" d="M180,80 L223,80"/>
+  <path class="lien" d="M375,80 L418,80"/>
+
+  <!-- Livraison continue -->
+  <rect class="zone" x="10" y="160" width="880" height="130" rx="8"/>
+  <text class="titre" x="876" y="182" text-anchor="end">Livraison continue (CD)</text>
+  <rect class="etape" x="30" y="205" width="150" height="60" rx="6"/>
+  <text class="txt" x="105" y="227">Provisionnement</text>
+  <text class="txt" x="105" y="245">Terraform</text>
+  <rect class="etape" x="205" y="205" width="150" height="60" rx="6"/>
+  <text class="txt" x="280" y="227">Déploiement</text>
+  <text class="txt" x="280" y="245">Ansible</text>
+  <rect class="etape" x="380" y="205" width="150" height="60" rx="6"/>
+  <text class="txt" x="455" y="227">Tests</text>
+  <text class="txt" x="455" y="245">d'acceptation</text>
+  <rect class="etape" x="555" y="205" width="150" height="60" rx="6"/>
+  <text class="txt" x="630" y="235">Préproduction</text>
+  <rect class="etape" x="730" y="205" width="140" height="60" rx="6"/>
+  <text class="txt" x="800" y="235">Production</text>
+  <path class="lien" d="M180,235 L203,235"/>
+  <path class="lien" d="M355,235 L378,235"/>
+  <path class="lien" d="M530,235 L553,235"/>
+  <path class="lien" d="M705,235 L728,235"/>
+
+  <!-- Passage CI vers CD -->
+  <path class="lien" d="M570,80 L620,80 L620,145 L105,145 L105,203"/>
+</svg>
