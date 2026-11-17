@@ -251,18 +251,99 @@ La **CI/CD** (intégration continue / livraison continue) automatise les étapes
 4. Des tests d'acceptation automatisés valident le bon fonctionnement de l'application dans cet environnement.
 5. Le même processus est rejoué sur un environnement de préproduction, pour une validation fonctionnelle par le client ou une équipe de recette, puis les changements sont appliqués en production.
 
+Sur Kubernetes, l'étape de déploiement est de plus en plus confiée à un agent GitOps plutôt qu'au pipeline lui-même (voir [GitOps](#gitops)).
+
+## GitOps
+
+Le **GitOps** pousse la logique de l'IaC jusqu'au déploiement : le dépôt Git devient la **source de vérité unique** de l'état désiré du système, et un agent veille en permanence à ce que la réalité corresponde à ce dépôt. Le terme a été proposé en 2017 par la société Weaveworks. C'est la démarche présentée dans la conférence fil rouge du module, qui assemble GitLab, Ansible, Terraform et Kubernetes.
+
+### Les quatre principes
+
+Le projet OpenGitOps, hébergé par la CNCF, résume la démarche en quatre principes :
+
+1. **Déclaratif** : l'état désiré du système est décrit, pas la suite d'actions pour l'atteindre (manifestes Kubernetes, charts Helm…).
+2. **Versionné et immuable** : cet état est stocké dans Git, qui en conserve l'historique complet. Chaque changement est un commit.
+3. **Tiré automatiquement** : un agent récupère lui-même l'état désiré depuis le dépôt (modèle *pull*).
+4. **Réconcilié en continu** : l'agent compare sans cesse l'état réel à l'état désiré et corrige les écarts.
+
+On reconnaît la **boucle de réconciliation** de Kubernetes (voir le [chapitre 5](05-orchestration.md#kubernetes)), étendue d'un cran. Kubernetes rapproche le cluster des objets enregistrés dans etcd ; l'agent GitOps rapproche ces objets du contenu de Git.
+
+### Push ou pull
+
+Dans une chaîne CI/CD classique, c'est le pipeline qui déploie : sa dernière étape exécute `kubectl apply` ou `helm upgrade` sur le cluster (modèle *push*). En GitOps, un agent installé dans le cluster vient chercher les changements (modèle *pull*).
+
+| | Push (pipeline CI/CD) | Pull (GitOps) |
+| --- | --- | --- |
+| Qui déploie ? | le pipeline, à la fin de son exécution | un agent dans le cluster, en continu |
+| Accès au cluster | le pipeline détient des identifiants d'administration | les identifiants restent dans le cluster ; l'agent ne fait que lire le dépôt |
+| Modification manuelle du cluster | invisible jusqu'au prochain déploiement | détectée (dérive, *drift*) et annulée |
+| Retour arrière | relancer un ancien pipeline | `git revert` |
+| Traçabilité | journaux du pipeline | historique Git : qui a changé quoi, quand, après quelle relecture |
+
+### Le déroulé type
+
+On sépare généralement deux dépôts : celui du **code de l'application** et celui de sa **configuration de déploiement** (manifestes, valeurs Helm).
+
+1. Un développeur pousse une modification du code. La CI construit l'image, la teste et la publie dans le registre (`mon-app:1.4.2`).
+2. La CI, ou un robot, propose dans le dépôt de configuration une merge request qui remplace l'ancienne étiquette d'image par `1.4.2`.
+3. Après relecture, la merge request est fusionnée.
+4. L'agent GitOps détecte le nouveau commit et applique les manifestes au cluster.
+5. Kubernetes met à jour les pods progressivement (*rolling update*).
+
+Un retour arrière se fait de la même façon : on annule le commit, et l'agent ramène le cluster à l'état précédent.
+
+### Argo CD et Flux
+
+Deux outils open source, tous deux projets diplômés (*graduated*) de la CNCF, dominent le domaine :
+
+- **Argo CD** : un serveur installé dans le cluster, avec une interface web qui montre l'état de synchronisation de chaque application ;
+- **Flux** : un ensemble de contrôleurs Kubernetes, piloté en ligne de commande et entièrement par des ressources Kubernetes.
+
+Avec Argo CD, une application se déclare elle-même par une ressource Kubernetes, qui associe un dossier d'un dépôt Git à un namespace du cluster :
+
+```yaml
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: mon-app
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://gitlab.example.com/equipe/mon-app-config.git
+    targetRevision: main          # branche suivie
+    path: k8s/production          # dossier des manifestes
+  destination:
+    server: https://kubernetes.default.svc   # le cluster où tourne Argo CD
+    namespace: mon-app
+  syncPolicy:
+    automated:
+      prune: true                 # supprimer ce qui a disparu du dépôt
+      selfHeal: true              # annuler les modifications manuelles
+```
+
+### Les limites
+
+- **Les secrets** : Git ne doit jamais contenir de mot de passe en clair. On y stocke des secrets chiffrés (Sealed Secrets, SOPS) ou de simples références vers un coffre-fort (External Secrets Operator et HashiCorp Vault, par exemple).
+- **Ce qui n'est pas dans Kubernetes** : les VM, les réseaux ou les comptes cloud restent le plus souvent créés par Terraform depuis un pipeline. Des outils comme Crossplane étendent la réconciliation à ces ressources, en les décrivant à leur tour comme des objets Kubernetes.
+- **L'ordre de déploiement** : un état désiré n'exprime pas naturellement « d'abord la base de données, ensuite l'application ». Il faut des mécanismes dédiés, comme les *sync waves* d'Argo CD ou les dépendances entre ressources de Flux.
+
 > **À retenir**
 >
 > - L'IaC décrit l'infrastructure dans du code versionné, reproductible et idempotent.
 > - Terraform crée l'infrastructure (provisionnement), Ansible la configure (gestion de configuration).
 > - Ansible : inventaire + playbooks, sans agent, via SSH. Terraform : `init`, `plan`, `apply`, avec un fichier d'état.
 > - La CI/CD enchaîne automatiquement build, tests et déploiements jusqu'en production.
+> - GitOps : Git est la source de vérité de l'état désiré ; un agent dans le cluster (Argo CD, Flux) le tire et le réconcilie en continu. Retour arrière = `git revert`.
 
 **Pour aller plus loin**
 
 - [Documentation Ansible](https://docs.ansible.com/)
 - [Documentation Terraform](https://developer.hashicorp.com/terraform/docs)
 - [OpenTofu](https://opentofu.org/)
+- [OpenGitOps, les principes du GitOps](https://opengitops.dev/)
+- [Documentation Argo CD](https://argo-cd.readthedocs.io/en/stable/)
+- [Documentation Flux](https://fluxcd.io/flux/)
 
 ---
 

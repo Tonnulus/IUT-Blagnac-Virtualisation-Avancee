@@ -79,7 +79,7 @@ Une VM isole un système d'exploitation complet ; un conteneur isole une applica
 
 **Kubernetes**, souvent abrégé K8s, est un système open source qui automatise le déploiement, la mise à l'échelle et la gestion des applications conteneurisées. Il regroupe les conteneurs d'une application en unités logiques, faciles à gérer et à découvrir. Conçu à l'origine par Google, il est maintenu par la Cloud Native Computing Foundation (CNCF).
 
-Son principe central est **déclaratif** : on décrit l'état désiré (« je veux 3 instances de mon application en version 2 ») et Kubernetes agit en permanence pour que l'état réel du cluster y corresponde. C'est la boucle de réconciliation.
+Son principe central est **déclaratif** : on décrit l'état désiré (« je veux 3 instances de mon application en version 2 ») et Kubernetes agit en permanence pour que l'état réel du cluster y corresponde. C'est la boucle de réconciliation. Le GitOps (voir le [chapitre 8](08-infrastructure-as-code.md#gitops)) l'étend jusqu'au dépôt Git.
 
 ### Architecture de base
 
@@ -155,9 +155,52 @@ Les ressources les plus courantes :
 
 *Figure 9 : lors d'une mise à jour, le Deployment (A) crée un nouveau ReplicaSet qui lance les nouveaux pods (B) ; le Service (C) envoie le trafic à tous les pods portant l'étiquette `app: demo-app` ; l'ancien ReplicaSet (D) est ramené à 0 réplica.*
 
+### Requests et limits
+
+Chaque conteneur d'un pod peut déclarer les ressources dont il a besoin. Kubernetes s'appuie sur deux valeurs :
+
+- la **request** (réservation) : la quantité de processeur et de mémoire garantie au conteneur. Le kube-scheduler ne place un pod que sur un nœud qui dispose encore de cette quantité non réservée ;
+- la **limit** (plafond) : la quantité maximale que le conteneur peut consommer. Elle est appliquée par les cgroups du noyau (voir le [chapitre 4](04-conteneurisation.md#fonctionnement-de-la-conteneurisation)).
+
+Le processeur se compte en millièmes de cœur (`250m` = un quart de cœur), la mémoire en Mio ou Gio (`128Mi`, `1Gi`). Dans le Deployment présenté plus haut, on les ajoute au conteneur :
+
+```yaml
+      containers:
+        - name: nginx
+          image: nginx:1.30
+          resources:
+            requests:
+              cpu: 250m          # réservé : un quart de cœur
+              memory: 128Mi
+            limits:
+              cpu: 500m          # au-delà, le conteneur est bridé
+              memory: 256Mi      # au-delà, le conteneur est tué (OOMKilled)
+```
+
+Les deux ressources ne réagissent pas de la même façon au dépassement :
+
+- **Processeur** : un conteneur qui atteint sa limit est **bridé** (*throttled*). Il ralentit, sans erreur visible.
+- **Mémoire** : un conteneur qui dépasse sa limit est **tué** par le noyau (`OOMKilled`), puis redémarré par le kubelet.
+
+Selon ses requests et ses limits, chaque pod reçoit une **classe de qualité de service** (QoS). Elle détermine l'ordre dans lequel les pods sont expulsés lorsqu'un nœud manque de mémoire :
+
+| Classe | Condition | Expulsé |
+| --- | --- | --- |
+| `Guaranteed` | requests = limits, pour le processeur et la mémoire de chaque conteneur | en dernier |
+| `Burstable` | au moins une request ou une limit, sans remplir la condition précédente | ensuite |
+| `BestEffort` | aucune request ni limit | en premier |
+
+On retrouve la **surallocation** des machines virtuelles (voir le [chapitre 9](09-monitoring.md#la-surallocation)) : la somme des requests d'un nœud ne peut pas dépasser sa capacité, mais la somme des limits le peut. Le pari est le même : tous les conteneurs n'atteignent pas leur plafond en même temps.
+
+Les requests servent enfin de référence à l'autoscaling. Le **Horizontal Pod Autoscaler** (HPA) exprime l'utilisation du processeur en pourcentage de la request, puis calcule le nombre de réplicas nécessaires pour revenir à la cible :
+
+*réplicas souhaités = ⌈ réplicas actuels × utilisation mesurée / utilisation cible ⌉*
+
+Par exemple, deux pods utilisés à 90 % pour une cible de 50 % donnent ⌈2 × 90 / 50⌉ = ⌈3,6⌉ = 4 pods. Les mesures proviennent du module `metrics-server`.
+
 ### Caractéristiques clés
 
-- **Mise à l'échelle automatique** (*autoscaling*) : Kubernetes ajuste le nombre de pods selon des critères comme la consommation de CPU ou de mémoire.
+- **Mise à l'échelle automatique** (*autoscaling*) : Kubernetes ajuste le nombre de pods selon des critères comme la consommation de CPU ou de mémoire, rapportée aux requests (voir [Requests et limits](#requests-et-limits)).
 - **Répartition de charge** : le trafic réseau est distribué entre les pods d'un même Service.
 - **Auto-réparation** : Kubernetes vérifie en continu la santé des conteneurs (sondes *liveness* et *readiness*) et remplace ceux qui ne répondent plus.
 - **Tolérance aux pannes** : grâce à la réplication, à la détection automatique des défaillances et au redémarrage des instances, l'application continue de fonctionner même si certains composants tombent.
@@ -177,11 +220,14 @@ Les ressources les plus courantes :
 > - Scaling vertical = machine plus grosse ; scaling horizontal = plus de machines.
 > - Kubernetes est déclaratif : on décrit l'état désiré, le plan de contrôle le fait advenir et le maintient.
 > - Pod = unité de base ; Deployment = application et ses mises à jour ; Service = point d'accès stable.
+> - Request = réservation (placement, base de l'autoscaling) ; limit = plafond appliqué par les cgroups : au-delà, bridage pour le processeur, arrêt (OOMKilled) pour la mémoire.
 
 **Pour aller plus loin**
 
 - [Kubernetes, « Vue d'ensemble »](https://kubernetes.io/fr/docs/concepts/overview/)
 - [Kubernetes, « Composants de Kubernetes »](https://kubernetes.io/fr/docs/concepts/overview/components/)
+- [Kubernetes, « Resource Management for Pods and Containers »](https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/)
+- [Kubernetes, « Horizontal Pod Autoscaling »](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
 - [IBM, « Qu'est-ce que l'orchestration de conteneurs ? »](https://www.ibm.com/fr-fr/topics/container-orchestration)
 - [Red Hat, « Qu'est-ce que l'orchestration ? »](https://www.redhat.com/fr/topics/automation/what-is-orchestration)
 

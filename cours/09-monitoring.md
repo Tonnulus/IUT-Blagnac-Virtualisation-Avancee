@@ -46,6 +46,97 @@ La collecte et l'analyse des **journaux** produits par les différents composant
 - **Splunk** : plateforme commerciale d'indexation, de recherche et de visualisation des logs, très répandue, qui détecte tendances et anomalies.
 - **Grafana Loki** : alternative plus légère, intégrée à l'écosystème Grafana.
 
+## Choisir ses métriques : USE, RED et golden signals
+
+Un hôte expose des centaines de métriques, un cluster Kubernetes des milliers. Trois grilles de lecture aident à choisir celles qui comptent.
+
+- **La méthode USE** (Brendan Gregg) s'applique aux **ressources** : processeur, mémoire, disque, réseau. Pour chacune, on suit :
+  - l'**utilisation** (*Utilization*) : la part du temps où la ressource est occupée ;
+  - la **saturation** (*Saturation*) : le travail en attente que la ressource ne peut pas absorber (file d'exécution du processeur, mémoire échangée sur le disque, file d'entrées-sorties) ;
+  - les **erreurs** (*Errors*) : erreurs de disque, paquets perdus…
+- **La méthode RED** (Tom Wilkie) s'applique aux **services** qui répondent à des requêtes, typiquement des microservices. Pour chacun, on suit :
+  - le **débit** (*Rate*) : le nombre de requêtes par seconde ;
+  - les **erreurs** (*Errors*) : le nombre de requêtes en échec ;
+  - la **durée** (*Duration*) : le temps de réponse, exprimé en percentiles.
+- **Les quatre signaux clés** (*golden signals*) de Google réunissent les deux points de vue : **latence**, **trafic**, **erreurs** et **saturation**.
+
+| Méthode | S'applique à | Question posée | Exemple |
+| --- | --- | --- | --- |
+| USE | une ressource (hôte, VM, nœud, disque) | la ressource est-elle le goulot d'étranglement ? | file d'exécution du processeur supérieure au nombre de cœurs |
+| RED | un service | les utilisateurs sont-ils bien servis ? | 99ᵉ percentile du temps de réponse supérieur à 500 ms |
+| Golden signals | un service et ses ressources | les deux à la fois | latence, trafic, erreurs, saturation |
+
+Une utilisation de 100 % n'est pas un problème en soi : c'est la **saturation** qui dégrade le service. À l'inverse, une utilisation moyenne modérée peut cacher des pics. Les métriques RED, vues par l'utilisateur, servent naturellement de SLI (voir [SLA, SLO et SLI](#sla-slo-et-sli)).
+
+## Les métriques propres à la virtualisation
+
+Dans une VM, le système invité ne voit que ses ressources virtuelles. Il peut se croire peu chargé alors qu'il attend l'hyperviseur, ou disposer de mémoire « libre » que l'hyperviseur lui a en réalité reprise. Il faut donc superviser à deux niveaux : dans l'invité **et** sur l'hôte.
+
+Les requêtes PromQL de cette section s'appuient sur deux exportateurs de Prometheus utilisés au TD 3 : **node_exporter**, qui expose les métriques d'un hôte Linux (physique ou virtuel), et **cAdvisor**, qui expose celles des conteneurs.
+
+### La surallocation
+
+La **surallocation** (*overcommitment*) consiste à attribuer aux VM plus de ressources virtuelles que l'hôte n'en possède physiquement. On la mesure par un ratio : un hôte de 32 threads qui porte 40 VM de 4 vCPU distribue 160 vCPU, soit un ratio de 5 pour 1. Le pari est statistique, comme celui du thin provisioning (voir le [chapitre 3](03-stockage-virtualise.md)) : les VM sont rarement toutes chargées en même temps. Lorsqu'elles le sont, elles se disputent le matériel.
+
+- **Processeur** : on accepte couramment des ratios de quelques vCPU par thread physique pour des charges générales, et l'on revient à 1 pour 1 pour des charges sensibles à la latence (bases de données, temps réel).
+- **Mémoire** : la surallocation est plus risquée. L'hyperviseur dispose de plusieurs mécanismes pour récupérer de la mémoire : le **ballooning** (un pilote installé dans l'invité « gonfle » et rend à l'hyperviseur la mémoire qu'il occupe), la **déduplication de pages** identiques entre VM (KSM sous Linux) et, en dernier recours, l'**échange sur disque** (*swap*) de l'hôte, qui effondre les performances. En production, on évite généralement de surallouer la mémoire.
+
+### Steal time et CPU ready
+
+Lorsque l'hôte est saturé, un vCPU qui a du travail doit attendre que l'hyperviseur lui attribue un cœur physique. Ce temps d'attente porte deux noms selon l'endroit où on le mesure :
+
+- le **steal time** (temps volé), mesuré depuis l'invité Linux sur KVM, Xen ou dans le cloud public : colonne `st` de `top` ou de `vmstat`, mode `steal` de node_exporter ;
+- le **CPU ready**, mesuré par l'hyperviseur VMware et affiché dans vCenter.
+
+Un steal time de quelques pour cent qui persiste est un signal d'alerte. Le symptôme typique : une application lente dans une VM dont le processeur n'est utilisé qu'à 60 %. Ajouter des vCPU à la VM n'y change rien, car le goulot d'étranglement est l'hôte : il faut déplacer la VM ou réduire la surallocation.
+
+```promql
+# Part du temps processeur volé par l'hyperviseur, par instance (en %)
+avg by (instance) (rate(node_cpu_seconds_total{mode="steal"}[5m])) * 100
+```
+
+### La latence disque
+
+Les VM d'un même hôte, ou d'un même stockage partagé (SAN, Ceph…), se partagent les mêmes disques. L'indicateur à suivre est la **latence** de chaque opération plus que le débit : une VM qui sature le stockage ralentit toutes les autres. Dans l'invité, `iostat -x` l'affiche (colonnes `r_await` et `w_await`, en millisecondes). Avec node_exporter :
+
+```promql
+# Latence moyenne d'une lecture, en secondes
+rate(node_disk_read_time_seconds_total[5m]) / rate(node_disk_reads_completed_total[5m])
+```
+
+Pour fixer les idées : une lecture prend de l'ordre d'une fraction de milliseconde sur un SSD NVMe et d'une dizaine de millisecondes sur un disque dur. Une latence qui dépasse durablement quelques dizaines de millisecondes sur un stockage partagé indique une contention.
+
+### Le voisin bruyant
+
+Ces phénomènes ont une cause commune, le **voisin bruyant** (*noisy neighbor*) : une VM ou un conteneur qui consomme une ressource partagée au détriment des autres.
+
+| Phénomène | Ce que l'on observe dans l'invité | Métrique à suivre | Où la lire |
+| --- | --- | --- | --- |
+| Surallocation du processeur | application lente, processeur peu chargé | steal time, CPU ready | `top`, node_exporter ; vCenter |
+| Surallocation de la mémoire | lenteurs, activité d'échange | ballooning, swap de l'hôte | hyperviseur |
+| Contention du stockage | latence élevée pour un faible débit | latence par opération | `iostat -x`, node_exporter ; hyperviseur, baie |
+| Thin provisioning | rien, jusqu'au blocage de toutes les VM | taux de remplissage du pool | hyperviseur, baie |
+
+### Et les conteneurs ?
+
+Les conteneurs connaissent les mêmes phénomènes, à travers les limites que leur imposent les cgroups (voir le [chapitre 4](04-conteneurisation.md)) et que Kubernetes expose sous forme de *requests* et de *limits* (voir le [chapitre 5](05-orchestration.md#requests-et-limits)). Un conteneur qui atteint sa limite de processeur est **bridé** (*throttled*) : il ralentit sans erreur visible. Celui qui dépasse sa limite de mémoire est **tué** (`OOMKilled`) puis redémarré. Le bridage se suit avec les métriques de cAdvisor ; l'arrêt pour manque de mémoire apparaît dans `kubectl describe pod` :
+
+```promql
+# Part des périodes pendant lesquelles le conteneur a été bridé par sa limite de processeur
+rate(container_cpu_cfs_throttled_periods_total[5m]) / rate(container_cpu_cfs_periods_total[5m])
+```
+
+### Anticiper plutôt que constater
+
+Superviser, c'est aussi prévoir. Plutôt que d'alerter quand un disque est plein, on alerte quand la tendance indique qu'il le sera bientôt. La fonction PromQL `predict_linear` prolonge la tendance observée :
+
+```promql
+# Le système de fichiers racine sera-t-il plein dans les 24 heures, au rythme des 6 dernières heures ?
+predict_linear(node_filesystem_avail_bytes{mountpoint="/"}[6h], 24 * 3600) < 0
+```
+
+Le même raisonnement s'applique au remplissage d'un pool en thin provisioning, à la croissance de la mémoire d'un service ou au nombre de vCPU distribués sur un cluster : c'est la planification des capacités.
+
 ## Les principaux outils
 
 Il existe de très nombreux outils de supervision, propriétaires ou open source. Certains se spécialisent dans un domaine, d'autres se veulent des solutions globales. Comparons trois outils très présents en entreprise.
@@ -110,12 +201,18 @@ Les équipes d'exploitation s'en servent pour :
 >
 > - Le monitoring suit quatre étapes : collecte, stockage, analyse (avec alertes), visualisation.
 > - Métriques, logs et traces forment les trois piliers de l'observabilité.
+> - USE pour les ressources (utilisation, saturation, erreurs), RED pour les services (débit, erreurs, durée) ; les golden signals réunissent les deux.
+> - En environnement virtualisé, on supervise l'invité et l'hôte : steal time ou CPU ready (surallocation du processeur), ballooning et swap (mémoire), latence disque (stockage partagé).
+> - Anticiper, c'est alerter sur une tendance (`predict_linear`) plutôt que sur un seuil déjà franchi.
 > - Prometheus pour les métriques et le cloud native, Nagios pour la disponibilité des services, Splunk et ELK pour les logs et la sécurité.
 > - SLI = mesure, SLO = objectif, SLA = contrat. 99,9 % de disponibilité autorise environ 8 h 45 min d'arrêt par an.
 
 **Pour aller plus loin**
 
 - [Prometheus, présentation](https://prometheus.io/docs/introduction/overview/)
+- [Brendan Gregg, « The USE Method »](https://www.brendangregg.com/usemethod.html)
+- [Grafana Labs, « The RED Method: how to instrument your services »](https://grafana.com/blog/2018/08/02/the-red-method-how-to-instrument-your-services/)
+- [Google, *Site Reliability Engineering*, chapitre « Monitoring Distributed Systems »](https://sre.google/sre-book/monitoring-distributed-systems/) (les quatre golden signals)
 - [Google Cloud, « SRE fundamentals: SLIs, SLAs and SLOs »](https://cloud.google.com/blog/products/devops-sre/sre-fundamentals-slis-slas-and-slos)
 - [Google, *Site Reliability Engineering*, chapitre « Service Level Objectives »](https://sre.google/sre-book/service-level-objectives/)
 

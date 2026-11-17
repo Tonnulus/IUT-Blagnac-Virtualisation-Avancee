@@ -13,6 +13,7 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **Cloud privé** | Infrastructure cloud dédiée à une seule organisation, sur site ou dans un centre de données privé. | [6](06-cloud.md) |
 | **Cloud public** | Infrastructure cloud mise à disposition de tous les clients d'un fournisseur, via Internet, et partagée entre eux. | [6](06-cloud.md) |
 | **Conteneur** | Instance en cours d'exécution d'une image, isolée par le noyau de l'hôte qu'elle partage. | [4](04-conteneurisation.md) |
+| **CPU ready** | Sous VMware, temps pendant lequel un vCPU prêt à travailler attend un cœur physique ; équivalent du steal time vu depuis l'hyperviseur. | [9](09-monitoring.md) |
 | **Deployment** | Ressource Kubernetes qui maintient un nombre de pods et gère leurs mises à jour progressives. | [5](05-orchestration.md) |
 | **DevOps** | Culture et ensemble de pratiques qui rapprochent le développement et l'exploitation pour livrer plus souvent, plus vite et avec une meilleure qualité. | [7](07-le-devops.md) |
 | **Docker Compose** | Outil qui décrit dans un fichier YAML une application multi-conteneurs (services, réseaux, volumes) et la démarre en une commande. | [4](04-conteneurisation.md) |
@@ -20,6 +21,8 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **Émulation** | Simulation logicielle d'un matériel différent de celui de l'hôte. | [1](01-virtualisation-concepts-generaux.md) |
 | **Extent** | Bloc de taille fixe (4 Mio par défaut), unité d'allocation de LVM. | [3](03-stockage-virtualise.md) |
 | **FinOps** | Pilotage financier du cloud, pour éviter que des ressources oubliées ou surdimensionnées ne fassent grimper la facture. | [6](06-cloud.md) |
+| **GitOps** | Démarche où Git est la source de vérité de l'état désiré du système, qu'un agent (Argo CD, Flux) tire et réconcilie en continu. | [8](08-infrastructure-as-code.md) |
+| **Golden signals** | Les quatre signaux clés de Google : latence, trafic, erreurs, saturation. | [9](09-monitoring.md) |
 | **Helm** | Gestionnaire de paquets de Kubernetes ; ses *charts* définissent, installent et mettent à jour des applications complètes. | [5](05-orchestration.md) |
 | **Hôte** | Système qui exécute les machines virtuelles ou les conteneurs. C'est le plus souvent une machine physique, mais ce peut être une VM : conteneurs lancés dans une VM, virtualisation imbriquée. | [1](01-virtualisation-concepts-generaux.md) |
 | **Hyperviseur** | Logiciel qui crée et exécute des machines virtuelles (type 1 sur le matériel, type 2 sur un OS). | [2](02-serveur-virtualise.md) |
@@ -44,6 +47,7 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **RAID** | Regroupement de disques pour améliorer performances et/ou tolérance aux pannes. Ce n'est pas une sauvegarde. | [3](03-stockage-virtualise.md) |
 | **Registre** | Service qui stocke et distribue les images de conteneurs (Docker Hub, GitLab Container Registry, Harbor…). | [4](04-conteneurisation.md) |
 | **ReplicaSet** | Ressource Kubernetes qui garantit qu'un nombre donné de pods identiques tourne en permanence. | [5](05-orchestration.md) |
+| **Requests / limits** | Dans Kubernetes, ressources réservées à un conteneur (requests) et plafond qu'il ne peut dépasser (limits), appliqué par les cgroups. | [5](05-orchestration.md) |
 | **SAN / NAS / DAS** | Stockage en mode bloc sur réseau dédié / stockage de fichiers en réseau / stockage local. | [3](03-stockage-virtualise.md) |
 | **Scaling** | Ajustement de la capacité d'un système : vertical (machine plus puissante) ou horizontal (plus de machines). | [5](05-orchestration.md) |
 | **SDN** | *Software-Defined Networking* : réseau dont le plan de contrôle est séparé du plan de données et centralisé dans un contrôleur logiciel. | [1](01-virtualisation-concepts-generaux.md) |
@@ -52,7 +56,10 @@ La dernière colonne renvoie au chapitre où la notion est expliquée.
 | **SLA / SLO / SLI** | Contrat de service / objectif de service / indicateur de service. | [9](09-monitoring.md) |
 | **Snapshot** | Instantané : copie de l'état d'un volume ou d'une VM à un moment donné, utile pour les sauvegardes et les tests. | [3](03-stockage-virtualise.md) |
 | **State (Terraform)** | Fichier `terraform.tfstate` où Terraform mémorise l'infrastructure qu'il gère ; il peut contenir des secrets. | [8](08-infrastructure-as-code.md) |
+| **Steal time** | Temps pendant lequel un vCPU avait du travail mais attendait que l'hyperviseur lui attribue un cœur physique ; signe de surallocation. | [9](09-monitoring.md) |
+| **Surallocation** | Attribution de plus de ressources virtuelles (vCPU, mémoire, disque) que l'hôte n'en possède physiquement. | [9](09-monitoring.md) |
 | **Thin provisioning** | Allocation de l'espace de stockage au fur et à mesure de son utilisation réelle. | [3](03-stockage-virtualise.md) |
+| **USE / RED** | Méthodes de choix des métriques : utilisation, saturation, erreurs pour une ressource ; débit, erreurs, durée pour un service. | [9](09-monitoring.md) |
 | **Vendor lock-in** | Enfermement propriétaire : dépendance aux services propres d'un fournisseur, qui rend difficile le départ vers un concurrent. | [6](06-cloud.md) |
 | **VLAN** | Découpage logique d'un réseau physique en plusieurs réseaux isolés, au niveau 2 (norme IEEE 802.1Q). | [1](01-virtualisation-concepts-generaux.md) |
 | **VM** | Machine virtuelle : ordinateur complet (processeur, mémoire, disques et réseau virtuels) fourni par un hyperviseur, avec son propre système d'exploitation. Ses instructions s'exécutent directement sur le processeur de l'hôte : ce n'est pas de l'émulation. | [1](01-virtualisation-concepts-generaux.md), [2](02-serveur-virtualise.md) |

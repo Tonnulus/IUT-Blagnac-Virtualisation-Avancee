@@ -13,10 +13,10 @@ Ce document rassemble les notions à maîtriser pour suivre le module de virtual
 - expliquer ce qu'est la virtualisation, la distinguer de l'émulation et citer ses domaines d'application ;
 - comparer les hyperviseurs de type 1 et de type 2, la paravirtualisation et la conteneurisation ;
 - choisir une architecture de stockage (DAS, SAN, NAS), un niveau de RAID et organiser des volumes avec LVM ;
-- construire et lancer des conteneurs Docker, puis décrire comment Kubernetes les orchestre ;
+- construire et lancer des conteneurs Docker, puis décrire comment Kubernetes les orchestre et leur alloue des ressources (requests, limits) ;
 - situer les modèles de service (IaaS, PaaS, SaaS) et de déploiement du cloud ;
-- expliquer la démarche DevOps et le rôle de l'Infrastructure as Code (Ansible, Terraform, CI/CD) ;
-- définir une stratégie de monitoring et formuler des objectifs de service (SLA, SLO, SLI).
+- expliquer la démarche DevOps et le rôle de l'Infrastructure as Code (Ansible, Terraform, CI/CD, GitOps) ;
+- définir une stratégie de monitoring, anticiper le comportement des métriques d'un environnement virtualisé (surallocation, steal time, latence disque) et formuler des objectifs de service (SLA, SLO, SLI).
 
 ## Sommaire
 
@@ -66,9 +66,12 @@ Ce document rassemble les notions à maîtriser pour suivre le module de virtual
    - [Ansible en pratique](08-infrastructure-as-code.md#ansible-en-pratique)
    - [Terraform en pratique](08-infrastructure-as-code.md#terraform-en-pratique)
    - [CI/CD](08-infrastructure-as-code.md#cicd)
+   - [GitOps](08-infrastructure-as-code.md#gitops)
 9. [Monitoring](09-monitoring.md)
    - [Pourquoi superviser](09-monitoring.md#pourquoi-superviser)
    - [Les types de monitoring](09-monitoring.md#les-types-de-monitoring)
+   - [Choisir ses métriques : USE, RED et golden signals](09-monitoring.md#choisir-ses-métriques--use-red-et-golden-signals)
+   - [Les métriques propres à la virtualisation](09-monitoring.md#les-métriques-propres-à-la-virtualisation)
    - [Les principaux outils](09-monitoring.md#les-principaux-outils)
    - [SLA, SLO et SLI](09-monitoring.md#sla-slo-et-sli)
 10. [Glossaire](10-glossaire.md)
